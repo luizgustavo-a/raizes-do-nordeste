@@ -1,8 +1,13 @@
 package br.com.uninter.raizesnordeste.application.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
 public class ProdutoEstoqueResponseDTO implements Serializable {
 
     private Long produtoId;
@@ -12,9 +17,6 @@ public class ProdutoEstoqueResponseDTO implements Serializable {
     private String categoria;
     private Integer quantidadeEstoque;
     private Boolean disponivel;
-
-    public ProdutoEstoqueResponseDTO() {
-    }
 
     public ProdutoEstoqueResponseDTO(Long produtoId, String nome, String descricao, BigDecimal preco,
                                      String categoria, Integer quantidadeEstoque) {
@@ -27,60 +29,8 @@ public class ProdutoEstoqueResponseDTO implements Serializable {
         this.disponivel = quantidadeEstoque != null && quantidadeEstoque > 0;
     }
 
-    public Long getProdutoId() {
-        return produtoId;
-    }
-
-    public void setProdutoId(Long produtoId) {
-        this.produtoId = produtoId;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public Integer getQuantidadeEstoque() {
-        return quantidadeEstoque;
-    }
-
     public void setQuantidadeEstoque(Integer quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
         this.disponivel = quantidadeEstoque != null && quantidadeEstoque > 0;
-    }
-
-    public Boolean getDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(Boolean disponivel) {
-        this.disponivel = disponivel;
     }
 }

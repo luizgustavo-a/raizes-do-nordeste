@@ -10,27 +10,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 @Tag(name = "Autenticação e Usuários", description = "Endpoints para login e cadastro com conformidade LGPD")
 public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
     @PostMapping("/login")
     @Operation(summary = "Autenticar usuário", description = "Realiza a autenticação via credenciais e retorna o token JWT.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Autenticado com sucesso"),
-        @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos"),
-        @ApiResponse(responseCode = "422", description = "Campos inválidos ou mal formatados")
+            @ApiResponse(responseCode = "200", description = "Autenticado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos"),
+            @ApiResponse(responseCode = "422", description = "Campos inválidos ou mal formatados")
     })
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
         LoginResponseDTO response = authService.login(dto);
@@ -40,9 +38,9 @@ public class AuthController {
     @PostMapping("/cadastro")
     @Operation(summary = "Cadastrar novo cliente com termo LGPD", description = "Cadastra cliente e registra o consentimento de dados.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "E-mail já existente ou consentimento recusado"),
-        @ApiResponse(responseCode = "422", description = "Validação de dados falhou")
+            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "E-mail já existente ou consentimento recusado"),
+            @ApiResponse(responseCode = "422", description = "Validação de dados falhou")
     })
     public ResponseEntity<LoginResponseDTO> cadastrar(@Valid @RequestBody CadastroUsuarioDTO dto, HttpServletRequest request) {
         String ip = request.getRemoteAddr();

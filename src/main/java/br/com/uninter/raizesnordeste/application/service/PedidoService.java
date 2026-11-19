@@ -9,6 +9,7 @@ import br.com.uninter.raizesnordeste.infrastructure.exception.EstoqueInsuficient
 import br.com.uninter.raizesnordeste.infrastructure.exception.FieldErrorDTO;
 import br.com.uninter.raizesnordeste.infrastructure.exception.RegraNegocioException;
 import br.com.uninter.raizesnordeste.infrastructure.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
@@ -29,22 +31,6 @@ public class PedidoService {
     private final EstoqueUnidadeRepository estoqueUnidadeRepository;
     private final PagamentoRepository pagamentoRepository;
     private final AuditoriaService auditoriaService;
-
-    public PedidoService(PedidoRepository pedidoRepository,
-                         UnidadeRepository unidadeRepository,
-                         UsuarioRepository usuarioRepository,
-                         ProdutoRepository produtoRepository,
-                         EstoqueUnidadeRepository estoqueUnidadeRepository,
-                         PagamentoRepository pagamentoRepository,
-                         AuditoriaService auditoriaService) {
-        this.pedidoRepository = pedidoRepository;
-        this.unidadeRepository = unidadeRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.produtoRepository = produtoRepository;
-        this.estoqueUnidadeRepository = estoqueUnidadeRepository;
-        this.pagamentoRepository = pagamentoRepository;
-        this.auditoriaService = auditoriaService;
-    }
 
     /**
      * Fluxo A - Passo 1: Criação de pedido com validação de estoque local e multicanalidade.
@@ -141,9 +127,9 @@ public class PedidoService {
 
     @Transactional(readOnly = true)
     public Page<PedidoResponseDTO> listarPedidos(CanalPedidoEnum canalPedido,
-                                                StatusPedidoEnum status,
-                                                Long unidadeId,
-                                                Pageable pageable) {
+                                                 StatusPedidoEnum status,
+                                                 Long unidadeId,
+                                                 Pageable pageable) {
         return pedidoRepository.findComFiltros(canalPedido, status, unidadeId, pageable)
                 .map(this::toResponseDTO);
     }

@@ -1,6 +1,9 @@
 package br.com.uninter.raizesnordeste.infrastructure.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -9,6 +12,8 @@ import java.util.List;
 /**
  * DTO padrão para respostas de erro da API REST.
  */
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StandardErrorDTO implements Serializable {
 
@@ -36,53 +41,5 @@ public class StandardErrorDTO implements Serializable {
         this.details = details != null ? details : new ArrayList<>();
         this.path = path;
         this.timestamp = Instant.now().toString();
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<FieldErrorDTO> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<FieldErrorDTO> details) {
-        this.details = details;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
     }
 }

@@ -12,6 +12,7 @@ import br.com.uninter.raizesnordeste.domain.repository.PagamentoRepository;
 import br.com.uninter.raizesnordeste.domain.repository.PedidoRepository;
 import br.com.uninter.raizesnordeste.infrastructure.exception.RegraNegocioException;
 import br.com.uninter.raizesnordeste.infrastructure.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,22 +23,13 @@ import java.util.UUID;
  * Serviço responsável por simular a integração desacoplada com gateway externo de pagamento.
  */
 @Service
+@RequiredArgsConstructor
 public class PagamentoService {
 
     private final PagamentoRepository pagamentoRepository;
     private final PedidoRepository pedidoRepository;
     private final EstoqueUnidadeRepository estoqueUnidadeRepository;
     private final AuditoriaService auditoriaService;
-
-    public PagamentoService(PagamentoRepository pagamentoRepository,
-                            PedidoRepository pedidoRepository,
-                            EstoqueUnidadeRepository estoqueUnidadeRepository,
-                            AuditoriaService auditoriaService) {
-        this.pagamentoRepository = pagamentoRepository;
-        this.pedidoRepository = pedidoRepository;
-        this.estoqueUnidadeRepository = estoqueUnidadeRepository;
-        this.auditoriaService = auditoriaService;
-    }
 
     @Transactional
     public PagamentoResponseDTO processarPagamentoMock(PagamentoSimulacaoDTO dto, String usuarioEmail) {

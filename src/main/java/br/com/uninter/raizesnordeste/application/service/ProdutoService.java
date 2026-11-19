@@ -7,6 +7,7 @@ import br.com.uninter.raizesnordeste.domain.repository.EstoqueUnidadeRepository;
 import br.com.uninter.raizesnordeste.domain.repository.ProdutoRepository;
 import br.com.uninter.raizesnordeste.domain.repository.UnidadeRepository;
 import br.com.uninter.raizesnordeste.infrastructure.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,19 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final EstoqueUnidadeRepository estoqueUnidadeRepository;
     private final UnidadeRepository unidadeRepository;
-
-    public ProdutoService(ProdutoRepository produtoRepository,
-                          EstoqueUnidadeRepository estoqueUnidadeRepository,
-                          UnidadeRepository unidadeRepository) {
-        this.produtoRepository = produtoRepository;
-        this.estoqueUnidadeRepository = estoqueUnidadeRepository;
-        this.unidadeRepository = unidadeRepository;
-    }
 
     @Transactional(readOnly = true)
     public List<Produto> listarTodosAtivos() {

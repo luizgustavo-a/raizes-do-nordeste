@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,23 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auditoria")
+@RequiredArgsConstructor
 @Tag(name = "Auditoria de Operações Sensíveis", description = "Consulta do registro de auditoria. Restrito a Gerentes e Administradores.")
 public class AuditoriaController {
 
     private final AuditoriaLogRepository auditoriaLogRepository;
 
-    public AuditoriaController(AuditoriaLogRepository auditoriaLogRepository) {
-        this.auditoriaLogRepository = auditoriaLogRepository;
-    }
-
     @GetMapping
     @PreAuthorize("hasAnyRole('GERENTE', 'ADMIN')")
     @Operation(summary = "Listar registros de auditoria",
-               description = "Retorna histórico de operações sensíveis (criação de pedido, cancelamento, alteração de status).")
+            description = "Retorna histórico de operações sensíveis (criação de pedido, cancelamento, alteração de status).")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista de auditoria retornada"),
-        @ApiResponse(responseCode = "401", description = "Não autenticado"),
-        @ApiResponse(responseCode = "403", description = "Acesso negado: Perfil CLIENTE ou ATENDENTE não possui permissão")
+            @ApiResponse(responseCode = "200", description = "Lista de auditoria retornada"),
+            @ApiResponse(responseCode = "401", description = "Não autenticado"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado: Perfil CLIENTE ou ATENDENTE não possui permissão")
     })
     public ResponseEntity<Page<AuditoriaResponseDTO>> listarLogs(
             @RequestParam(defaultValue = "0") int page,

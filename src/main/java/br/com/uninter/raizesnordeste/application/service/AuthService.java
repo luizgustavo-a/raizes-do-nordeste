@@ -3,6 +3,7 @@ package br.com.uninter.raizesnordeste.application.service;
 import br.com.uninter.raizesnordeste.application.dto.CadastroUsuarioDTO;
 import br.com.uninter.raizesnordeste.application.dto.LoginRequestDTO;
 import br.com.uninter.raizesnordeste.application.dto.LoginResponseDTO;
+import br.com.uninter.raizesnordeste.application.dto.UserDetailsDTO;
 import br.com.uninter.raizesnordeste.domain.entity.ConsentimentoLgpd;
 import br.com.uninter.raizesnordeste.domain.entity.Usuario;
 import br.com.uninter.raizesnordeste.domain.enums.PerfilEnum;
@@ -10,6 +11,7 @@ import br.com.uninter.raizesnordeste.domain.repository.ConsentimentoLgpdReposito
 import br.com.uninter.raizesnordeste.domain.repository.UsuarioRepository;
 import br.com.uninter.raizesnordeste.infrastructure.exception.RegraNegocioException;
 import br.com.uninter.raizesnordeste.infrastructure.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
@@ -27,18 +30,6 @@ public class AuthService {
 
     @Value("${jwt.expiration}")
     private long jwtExpirationInMs;
-
-    public AuthService(UsuarioRepository usuarioRepository,
-                       ConsentimentoLgpdRepository consentimentoRepository,
-                       PasswordEncoder passwordEncoder,
-                       JwtTokenProvider tokenProvider,
-                       AuditoriaService auditoriaService) {
-        this.usuarioRepository = usuarioRepository;
-        this.consentimentoRepository = consentimentoRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenProvider = tokenProvider;
-        this.auditoriaService = auditoriaService;
-    }
 
     @Transactional(readOnly = true)
     public LoginResponseDTO login(LoginRequestDTO dto) {
@@ -60,7 +51,7 @@ public class AuthService {
                 usuario.getNome()
         );
 
-        LoginResponseDTO.UserDetailsDTO userDTO = new LoginResponseDTO.UserDetailsDTO(
+        UserDetailsDTO userDTO = new UserDetailsDTO(
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getPerfil().name()
@@ -114,7 +105,7 @@ public class AuthService {
                 salvo.getNome()
         );
 
-        LoginResponseDTO.UserDetailsDTO userDTO = new LoginResponseDTO.UserDetailsDTO(
+        UserDetailsDTO userDTO = new UserDetailsDTO(
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getPerfil().name()

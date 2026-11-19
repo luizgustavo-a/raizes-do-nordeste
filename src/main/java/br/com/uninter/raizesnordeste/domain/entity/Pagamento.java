@@ -2,6 +2,11 @@ package br.com.uninter.raizesnordeste.domain.entity;
 
 import br.com.uninter.raizesnordeste.domain.enums.StatusPagamentoEnum;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,6 +16,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "tb_pagamento")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Pagamento implements Serializable {
 
     @Id
@@ -40,77 +49,10 @@ public class Pagamento implements Serializable {
     @Column(name = "mensagem_retorno", length = 255)
     private String mensagemRetorno;
 
-    public Pagamento() {
-    }
-
     public Pagamento(Pedido pedido, String formaPagamento, BigDecimal valor) {
         this.pedido = pedido;
         this.formaPagamento = formaPagamento;
         this.valor = valor;
         this.status = StatusPagamentoEnum.PENDENTE;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public String getTransacaoExternaId() {
-        return transacaoExternaId;
-    }
-
-    public void setTransacaoExternaId(String transacaoExternaId) {
-        this.transacaoExternaId = transacaoExternaId;
-    }
-
-    public String getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
-
-    public StatusPagamentoEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusPagamentoEnum status) {
-        this.status = status;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public LocalDateTime getDataProcessamento() {
-        return dataProcessamento;
-    }
-
-    public void setDataProcessamento(LocalDateTime dataProcessamento) {
-        this.dataProcessamento = dataProcessamento;
-    }
-
-    public String getMensagemRetorno() {
-        return mensagemRetorno;
-    }
-
-    public void setMensagemRetorno(String mensagemRetorno) {
-        this.mensagemRetorno = mensagemRetorno;
     }
 }

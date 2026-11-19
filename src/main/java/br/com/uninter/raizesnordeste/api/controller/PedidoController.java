@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,25 +26,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pedidos")
+@RequiredArgsConstructor
 @Tag(name = "Pedidos (Fluxo Crítico)", description = "Endpoints de criação multicanal, consulta e ciclo de vida do pedido")
 public class PedidoController {
 
     private final PedidoService pedidoService;
 
-    public PedidoController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
-    }
-
     @PostMapping
     @Operation(summary = "Criar novo pedido (Fluxo Crítico)",
-               description = "Valida estoque na unidade, exige o campo canalPedido (APP, TOTEM, BALCAO, PICKUP, WEB) e reserva itens.")
+            description = "Valida estoque na unidade, exige o campo canalPedido (APP, TOTEM, BALCAO, PICKUP, WEB) e reserva itens.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Pedido criado com sucesso aguardando pagamento"),
-        @ApiResponse(responseCode = "400", description = "Requisição inválida ou canalPedido ausente/inválido"),
-        @ApiResponse(responseCode = "401", description = "Token ausente ou expirado"),
-        @ApiResponse(responseCode = "404", description = "Unidade ou Produto inexistente"),
-        @ApiResponse(responseCode = "409", description = "Conflito: Estoque insuficiente na filial selecionada"),
-        @ApiResponse(responseCode = "422", description = "Campos obrigatórios não atendidos")
+            @ApiResponse(responseCode = "201", description = "Pedido criado com sucesso aguardando pagamento"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida ou canalPedido ausente/inválido"),
+            @ApiResponse(responseCode = "401", description = "Token ausente ou expirado"),
+            @ApiResponse(responseCode = "404", description = "Unidade ou Produto inexistente"),
+            @ApiResponse(responseCode = "409", description = "Conflito: Estoque insuficiente na filial selecionada"),
+            @ApiResponse(responseCode = "422", description = "Campos obrigatórios não atendidos")
     })
     public ResponseEntity<PedidoResponseDTO> criarPedido(
             @Valid @RequestBody PedidoCreateRequestDTO dto,
@@ -54,7 +52,7 @@ public class PedidoController {
 
     @GetMapping
     @Operation(summary = "Listar pedidos com filtros (Multicanalidade e Status)",
-               description = "Permite filtrar pedidos por canalPedido (ex: TOTEM, APP), status e filial com paginação.")
+            description = "Permite filtrar pedidos por canalPedido (ex: TOTEM, APP), status e filial com paginação.")
     public ResponseEntity<Page<PedidoResponseDTO>> listarPedidos(
             @Parameter(description = "Canal de origem (APP, TOTEM, BALCAO, PICKUP, WEB)")
             @RequestParam(required = false) CanalPedidoEnum canalPedido,
@@ -79,12 +77,12 @@ public class PedidoController {
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAnyRole('ATENDENTE', 'GERENTE', 'ADMIN')")
     @Operation(summary = "Atualizar status do pedido (Cozinha/Balcão)",
-               description = "Transições de estado: EM_PREPARACAO -> PRONTO -> ENTREGUE / CANCELADO. Requer permissão operacional.")
+            description = "Transições de estado: EM_PREPARACAO -> PRONTO -> ENTREGUE / CANCELADO. Requer permissão operacional.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Transição de status inválida"),
-        @ApiResponse(responseCode = "403", description = "Perfil sem permissão para atualizar status"),
-        @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
+            @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Transição de status inválida"),
+            @ApiResponse(responseCode = "403", description = "Perfil sem permissão para atualizar status"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
     public ResponseEntity<PedidoResponseDTO> atualizarStatus(
             @PathVariable Long id,

@@ -1,6 +1,10 @@
 package br.com.uninter.raizesnordeste.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -10,6 +14,9 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "tb_consentimento_lgpd")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ConsentimentoLgpd implements Serializable {
 
     @Id
@@ -32,62 +39,11 @@ public class ConsentimentoLgpd implements Serializable {
     @Column(name = "ip_origem", length = 45)
     private String ipOrigem;
 
-    public ConsentimentoLgpd() {
-    }
-
     public ConsentimentoLgpd(Usuario usuario, String finalidade, Boolean consentido, String ipOrigem) {
         this.usuario = usuario;
         this.finalidade = finalidade;
         this.consentido = consentido;
         this.ipOrigem = ipOrigem;
         this.dataConsentimento = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getFinalidade() {
-        return finalidade;
-    }
-
-    public void setFinalidade(String finalidade) {
-        this.finalidade = finalidade;
-    }
-
-    public Boolean getConsentido() {
-        return consentido;
-    }
-
-    public void setConsentido(Boolean consentido) {
-        this.consentido = consentido;
-    }
-
-    public LocalDateTime getDataConsentimento() {
-        return dataConsentimento;
-    }
-
-    public void setDataConsentimento(LocalDateTime dataConsentimento) {
-        this.dataConsentimento = dataConsentimento;
-    }
-
-    public String getIpOrigem() {
-        return ipOrigem;
-    }
-
-    public void setIpOrigem(String ipOrigem) {
-        this.ipOrigem = ipOrigem;
     }
 }
